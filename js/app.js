@@ -1,5 +1,18 @@
+const WIDTH = 505;
+const HEIGHT = 606;
+const CELL_WIDTH = 101;
+const CELL_HEIGHT = 83;
+const numRow = 6;
+const numCol = 5;
+const PlayerX = 2 * CELL_WIDTH;
+const PlayerY = 71 + 4 * CELL_HEIGHT;
+const PlayerMAX_X = 404;
+const PlayerMIN_X = 0;
+const PlayerMIN_Y = -12;
+const PlayerMAX_Y = 403;
+
 // Enemies our player must avoid
-var Enemy = function(x, y) {
+var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -8,6 +21,7 @@ var Enemy = function(x, y) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
+    this.speed = speed;
 };
 
 // Update the enemy's position, required method for game
@@ -16,14 +30,20 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    // console.log(this.x);
-    this.x = this.x + dt * 10;
+    if(this.x >= WIDTH){
+        this.x = 0;
+    }
+    this.x = this.x + dt * this.speed;
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
+Enemy.prototype.checkCollision = function(object){
+    return (Math.abs(this.x - object.x) <= 50) && (Math.abs(this.y - object.y) <= 50);
+}
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -32,27 +52,53 @@ var Player = function(x, y){
     this.sprite = 'images/char-boy.png';
     this.x = x;
     this.y = y;
-}
-
-Player.prototype.update = function(dt){
-
 };
+
+Player.prototype.update = function(dt){};
 
 Player.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Player.prototype.checkWin = function(){
+    if(this.y<=0){
+        alert("You won!");
+        this.reset();
+    }
 }
+
+Player.prototype.reset = function(){
+    this.x = PlayerX;
+    this.y = PlayerY;
+};
 
 Player.prototype.handleInput = function(key){
-
-}
+    switch(key){
+        case 'up':
+            this.y > PlayerMIN_Y ? this.y -= CELL_HEIGHT : '';
+            break;
+        case 'down':
+            this.y < PlayerMAX_Y? this.y += CELL_HEIGHT : '';
+            break;
+        case 'left':
+            this.x > PlayerMIN_X? this.x -= CELL_WIDTH: '';
+            break;
+        case 'right':
+            this.x < PlayerMAX_X? this.x += CELL_WIDTH: '';
+            break;
+    }
+    console.log("PlayerX:", this.x);
+    console.log("PlayerY:", this.y); 
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var Enemy_1 = new Enemy(10, 10);
-var Enemy_2 = new Enemy(10, 30);
-allEnemies = [Enemy_1, Enemy_2];
-var player = new Player(20, 20);
+var Enemy_1 = new Enemy(83 - 12, 71 - 5, 50);
+var Enemy_2 = new Enemy(10, 71 + CELL_HEIGHT - 5, 60);
+var Enemy_3 = new Enemy(10, 71 + 2 * CELL_HEIGHT - 5 , 70);
+allEnemies = [Enemy_1, Enemy_2, Enemy_3];
+var player = new Player(PlayerX, PlayerY);
 
 
 // This listens for key presses and sends the keys to your
@@ -67,3 +113,4 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
