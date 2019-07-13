@@ -28,6 +28,7 @@ var Engine = (function(global) {
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
+
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -66,6 +67,7 @@ var Engine = (function(global) {
         reset();
         lastTime = Date.now();
         main();
+        
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -79,9 +81,18 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
 
+    function checkCollisions(){
+        var collided = allEnemies.some(function(enemy){
+            return enemy.checkCollision(player);
+        });
+        // console.log(collided);
+        if(collided){
+            player.reset();
+        }
+    };
     /* This is called by the update function and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
      * their update() methods. It will then call the update function for your
@@ -119,7 +130,7 @@ var Engine = (function(global) {
             row, col;
 
         // Before drawing, clear existing canvas
-        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         /* Loop through the number of rows and columns we've defined above
          * and, using the rowImages array, draw the correct image for that
@@ -137,7 +148,7 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-
+        // ctx.drawImage(Resources.get('images/Selector.png'), 0, 0);
         renderEntities();
     }
 
@@ -173,7 +184,8 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/Selector.png'
     ]);
     Resources.onReady(init);
 
@@ -182,4 +194,5 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+    
 })(this);
