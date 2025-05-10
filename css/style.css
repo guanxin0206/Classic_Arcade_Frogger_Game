@@ -1,3 +1,14 @@
 body {
-    text-align: center;
+  text-align: center;
+}
+
+#character-select img {
+  cursor: pointer;
+  border: 2px solid transparent;
+  margin: 5px;
+  width: 80px;
+}
+
+#character-select img.selected {
+  border: 2px solid gold;
 }

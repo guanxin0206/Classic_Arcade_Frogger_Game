@@ -1,13 +1,52 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Effective JavaScript: Frogger</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="mode-selector">
+      <label for="gameMode">选择模式</label>
+      <select id="gameMode">
+        <option value="easy">Easy</option>
+        <option value="normal">Normal</option>
+        <option value="hard">Hard</option>
+      </select>
+    </div>
+
+    <div id="character-select">
+      <h3>选择角色</h3>
+      <div class="character-options">
+        <img
+          class="char-option"
+          src="images/char-boy.png"
+          data-char="images/char-boy.png"
+        />
+        <img
+          class="char-option"
+          src="images/char-cat-girl.png"
+          data-char="images/char-cat-girl.png"
+        />
+        <img
+          class="char-option"
+          src="images/char-horn-girl.png"
+          data-char="images/char-horn-girl.png"
+        />
+        <img
+          class="char-option"
+          src="images/char-pink-girl.png"
+          data-char="images/char-pink-girl.png"
+        />
+        <img
+          class="char-option"
+          src="images/char-princess-girl.png"
+          data-char="images/char-princess-girl.png"
+        />
+      </div>
+    </div>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>
-</body>
+  </body>
 </html>
